@@ -1,1 +1,1 @@
-# Genomic-population-analysis-of-Neisseria-gonorrhoeae
+# Genomic_population_analysis_of_Neisseria_gonorrhoeae
