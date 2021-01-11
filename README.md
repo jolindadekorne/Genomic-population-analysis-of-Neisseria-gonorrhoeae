@@ -12,7 +12,7 @@ The pipeline includes the following steps and tools:
 | Filter low quality raw reads + trim adapters | fastp |
 | Assembly | skesa | 
 | Assembly quality check | QUAST |
-| Calculate percentage of reference FA1090 covered by raw reads | minimap2 + samtools |
+| Calculate percentage of reference FA1090 covered by raw reads | BWA-MEM2 + samtools |
 | Multi-Locus Sequence Typing | mlst |
 | NG-Multi Antigen Sequence Typing | ngmaster |
 | Look for23S mutations in raw reads | ariba |
