@@ -7,8 +7,7 @@ rule all:
                 expand("skesa_out/{sample}.fasta", sample = IDS),
                 expand("quast_out/{sample}", sample=IDS),
                 "multiqc_quast_out",
-                expand("sorted_bam_FA1090/{sample}.sorted.bam", sample = IDS),
-                expand("sorted_bam_FA1090/samtools_coverage_{sample}.txt", sample = IDS),
+                expand("coverage_FA1090/{sample}_cov.txt", sample=IDS),
                 "mlst.tsv",
 		"ngmast.tsv",
 		expand("ariba/{sample}", sample=IDS),
@@ -90,37 +89,29 @@ rule multiqc_quast:
                 multiqc {input} -o {output} 2>&1>{log}
                 """
 
-rule samtools:
+rule coverage:
         input:
-                fw = "raw_data/{sample}_R1.fastq.gz",
-                rv = "raw_data/{sample}_R2.fastq.gz",
-                ref = "NgRefFA1090.fna"
+                fw = "trimmed_illumina/{sample}_fastpout_1.fastq.gz",
+                rv = "trimmed_illumina/{sample}_fastpout_2.fastq.gz"
         output:
-                sort_bam = "sorted_bam_FA1090/{sample}.sorted.bam"
+                cov = "coverage_FA1090/{sample}_cov.txt"
         log:
-                "logs/samtools/samtools_{sample}.log"
+                bam = "logs/bwamem_samtools/{sample}.log",
+                cov = "logs/coverage_FA1090/coverage_FA1090_{sample}.log"
         params:
-                minimap = "sr"
+                ref = "NgRefFA1090",
+                path = "/home/jdkorne/samtools_1.11/bin",
+                bam_out = "temp_bam/{sample}_temp_sorted.bam"
         threads: 6
         shell:
                 """
-                minimap2 -ax {params.minimap} -t {threads} {input.ref} {input.fw} {input.rv} | samtools view -S -b | samtools sort --threads {threads} -o {output.sort_bam} 1>{output} 2>{log}
+                mkdir -p temp_bam
+                mkdir -p coverage_FA1090
+                bwa-mem2-2.1_x64-linux/bwa-mem2 mem -t {threads} {params.ref} {input.fw} {input.rv} | {$
+                {params.path}/samtools coverage -o {output.cov} {params.bam_out} 2>&1>{log.cov}
+                rm {params.bam_out}
                 """
-
-rule samtools_coverage:
-        input:
-                "sorted_bam_FA1090/{sample}.sorted.bam"
-        output:
-                filelist = "sorted_bam_FA1090/{sample}.txt",
-                cov = "sorted_bam_FA1090/samtools_coverage_{sample}.txt"
-        log:
-                "logs/samtools_coverage_{sample}.log"
-        shell:
-                """
-                ls {input} > {output.filelist}
-                samtools coverage -b {output.filelist} -o {output.cov}
-                """
-
+		
 rule mlst:
         input:
                 expand("skesa_out/{sample}.fasta", sample=IDS)
