@@ -18,6 +18,7 @@ The pipeline includes the following steps and tools:
 | Look for23S mutations in raw reads | ariba |
 | Call variants using reference FA1090 + create core genome alignment | snippy |
 | Remove recombination from variant alignment and create phylogenetic tree | Gubbins + RAxML |
+!Add script for visualization of SNPs??
 
 ## Other files needed
 - Reference genome FA1090 is used for calculating coverage and calling variants: NC_002946.2. The reference genome should be located in the same directory as the Snakefile.
