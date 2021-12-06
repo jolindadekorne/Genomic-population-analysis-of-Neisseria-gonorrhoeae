@@ -1,5 +1,5 @@
 # Genomic_population_analysis_of_Neisseria_gonorrhoeae
-This repository contains the Snakemake pipeline used to generate the results described in the paper: "Emergence of a cephalosporin reduced susceptible Neisseria gonorrhoeae clone between 2014-2019 in Amsterdam, the Netherlands, revealed by a genomic population analysis", preprint:
+This repository contains the Snakemake pipeline used to generate the results described in the paper: "Emergence of a cephalosporin reduced susceptible Neisseria gonorrhoeae clone between 2014-2019 in Amsterdam, the Netherlands, revealed by a genomic population analysis", [published in the Journal of Antimicrobial Chemotherapy](https://academic.oup.com/jac/article/76/7/1759/6178649)
 
 ## Input
 This pipeline uses forward and reverse raw Illumina sequencing reads which are located in the folder `raw_data`. The raw data files should be named `{id}_R1.fastq.gz` and `{id}_R2.fastq.gz`
